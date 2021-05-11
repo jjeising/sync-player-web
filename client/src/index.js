@@ -17,6 +17,7 @@ const Player = ({}) => {
 	const [mediaInput, setMediaInput] = useState('https://wdradaptiv-vh.akamaihd.net/i/medp/ondemand/weltweit/fsk0/242/2424815/,2424815_34867771,2424815_34867772,2424815_34867770,2424815_34867773,2424815_34867769,.mp4.csmil/master.m3u8');
 	const [mediaSrc, setMediaSrc] = useState(null);
 	const [name, setName] = useState((localStorageSupported && window.localStorage.getItem('name')) || 'Viewer');
+	const [pageUnmuted, setPageUnmuted] = useState(false);
 	const [playbackReady, setPlaybackReady] = useState(false);
 	const [playbackStateVersion, setPlaybackStateVersion] = useState(-1);
 	const [ready, setReady] = useState(false);
@@ -219,7 +220,13 @@ const Player = ({}) => {
 					<br />
 					<label>
 						Ready to start:
-						<input type="checkbox" value={ready} onChange={(event) => setReady(event.target.checked)} />
+						<input type="checkbox" value={ready} onChange={(event) => {
+							if (!pageUnmuted) {
+								setPageUnmuted(true);
+							}
+							
+							setReady(event.target.checked);
+						}} />
 					</label>
 					<br />
 					<label>
@@ -243,7 +250,7 @@ const Player = ({}) => {
 				{room && room.media.type === 'video' && room.media.src && (
 					<video
 						controls
-						muted
+						muted={!pageUnmuted}
 						ref={video}
 						
 						onLoadedData={onVideoPlaybackStateChanged}
