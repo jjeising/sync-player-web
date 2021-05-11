@@ -59,10 +59,10 @@ const Player = ({}) => {
 	const onVideoPlaybackStateChanged = (event) => {
 		setPlaybackReady(video.current.readyState > 2);
 		
-		if (video.current.readyState > 2 && room.state.playbackStarted) {
+		if (video.current.readyState === 4 && room.state.playbackStarted) {
 			const diff = Math.abs(video.current.currentTime - ((timeSync.current.now() - room.state.playbackStarted) / 1000));
 			
-			if (diff > 0.5) {
+			if (diff > 1.5) {
 				video.current.currentTime = (timeSync.current.now() - room.state.playbackStarted) / 1000;
 			}
 		}
@@ -128,6 +128,11 @@ const Player = ({}) => {
 	}, [socket, connected, ready]);
 	
 	useEffect(() => {
+		if (room && !room.media.src) {
+			setPlaybackReady(false);
+			return;
+		}
+		
 		if (!video.current) {
 			return;
 		}
