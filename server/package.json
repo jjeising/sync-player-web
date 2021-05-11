@@ -1,0 +1,12 @@
+{
+  "name": "sync-player-web-server",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Jannes Jeising",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.2"
+  }
+}
