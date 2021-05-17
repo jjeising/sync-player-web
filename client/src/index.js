@@ -141,8 +141,14 @@ const Player = ({}) => {
 		if (mediaSrc !== room.media.src) {
 			setMediaSrc(room.media.src);
 			
-			// Check for native HLS support
-			if (video.current.canPlayType('application/vnd.apple.mpegurl')) {
+			const srcURL = new URL(room.media.src);
+			const srcURLExtension = srcURL.pathname.split('.').pop();
+			
+			if (
+				srcURLExtension === 'mp4' ||
+				// Check for native HLS support
+				video.current.canPlayType('application/vnd.apple.mpegurl')
+			) {
 				video.current.src = room.media.src;
 			} else {
 				const hls = new Hls();
